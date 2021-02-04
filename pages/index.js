@@ -90,7 +90,7 @@ function Previewer({ file }) {
 
   return (
     <div className={css.preview}>
-      <div className={css.title}>{path.basename(file.name)}</div>
+      <div className={css.title}>File Preview - {path.basename(file.name)}</div>
       <div className={css.content}>{value}</div>
     </div>
   );

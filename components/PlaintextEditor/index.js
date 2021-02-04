@@ -11,19 +11,22 @@ function PlainTextEditor({ file, write }) {
   }, [])
   return (
     <div className={css.editor}>
-      <Editor
-        value={fileContent}
-        onValueChange={(fileContent) => {
-          const updatedFile = new File([`${fileContent}`], file.name, { type: file.type, lastModified: new Date() })
-          write(updatedFile)
-          setFileContent(fileContent)
-        }}
-        highlight={(fileContent) => fileContent}
-        padding={10}
-        tabSize={2}
-        insertSpaces={true}
-        className={css.content}
-      />
+      <div className={css.title}>Text Editor</div>
+      <div className={css.content}>
+        <Editor
+          value={fileContent}
+          onValueChange={(fileContent) => {
+            const updatedFile = new File([`${fileContent}`], file.name, { type: file.type, lastModified: new Date() })
+            write(updatedFile)
+            setFileContent(fileContent)
+          }}
+          highlight={fileContent => fileContent}
+          padding={20}
+          tabSize={4}
+          insertSpaces={false}
+          className={css.content}
+        />
+      </div>
     </div>
   );
 }
