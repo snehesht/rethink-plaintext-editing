@@ -1,20 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'react-simple-code-editor';
-
-import { highlight, languages } from 'prismjs';
-import 'prismjs/components/prism-markdown';
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism.css";
-
 import css from './style.css';
 
-function MarkdownEditor({ file, write }) {
+function JavascriptEditor({ file, write }) {
   const [fileContent, setFileContent] = React.useState('')
   React.useEffect(() => {
     file.text().then(content => setFileContent(content))
   }, [])
   return (
-    <div className={css.editor}>
+    <div className={css.editorbase}>
       <Editor
         value={fileContent}
         onValueChange={(fileContent) => {
@@ -22,17 +21,19 @@ function MarkdownEditor({ file, write }) {
           write(updatedFile)
           setFileContent(fileContent)
         }}
-        highlight={fileContent => highlight(fileContent, languages.markup, 'markup')}
-        padding={12}
-        className={css.content}
+        highlight={(fileContent) => highlight(fileContent, languages.js)}
+        padding={10}
+        tabSize={2}
+        insertSpaces={true}
+        className={css.editor}
       />
     </div>
   );
 }
 
-MarkdownEditor.propTypes = {
+JavascriptEditor.propTypes = {
   file: PropTypes.object,
   write: PropTypes.func
 };
 
-export default MarkdownEditor;
+export default JavascriptEditor;

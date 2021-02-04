@@ -3,12 +3,15 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import path from 'path';
 import classNames from 'classnames';
+import { encode, decode } from 'js-base64';
 
 import { listFiles } from '../files';
+import useLocalStorage from '../lib/localstorage';
 
 // Used below, these need to be registered
 import MarkdownEditor from '../MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
+import JavascriptEditor from '../components/JavascriptEditor';
 
 import IconPlaintextSVG from '../public/icon-plaintext.svg';
 import IconMarkdownSVG from '../public/icon-markdown.svg';
@@ -99,23 +102,39 @@ Previewer.propTypes = {
 
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
-  // "text/plain": PlaintextEditor,
-  // "text/markdown": MarkdownEditor,
+  "text/plain": PlaintextEditor,
+  "text/markdown": MarkdownEditor,
+  "text/javascript": JavascriptEditor,
 };
 
 function PlaintextFilesChallenge() {
   const [files, setFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
+  const [cacheFiles, setCacheFiles] = useLocalStorage('editedfiles', { files: {}, lastActiveFile: null });
 
   useEffect(() => {
     const files = listFiles();
-    setFiles(files);
+    const updateFiles = [];
+    for (let file of files) {
+      if (!Object.keys(cacheFiles.files).includes(file.name)) {
+        updateFiles.push(file)
+      } else {
+        const decodedContent = decode(cacheFiles.files[file.name]);
+        updateFiles.push(new File([decodedContent], file.name, { type: file.type, lastModified: new Date() }))
+      }
+    }
+    setFiles(updateFiles);
   }, []);
 
-  const write = file => {
-    console.log('Writing soon... ', file.name);
+  const write = newFile => {
+    const updatedFiles = files.filter(file => file.name !== newFile.name);
+    setFiles([...updatedFiles, newFile])
 
-    // TODO: Write the file to the `files` array
+    newFile.text().then(content => {
+      const newCachedFiles = cacheFiles.files;
+      newCachedFiles[newFile.name] = encode(content)
+      setCacheFiles({ files: newCachedFiles, lastActiveFile: newFile.name })
+    })
   };
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
@@ -157,8 +176,8 @@ function PlaintextFilesChallenge() {
       <main className={css.editorWindow}>
         {activeFile && (
           <>
-            {Editor && <Editor file={activeFile} write={write} />}
-            {!Editor && <Previewer file={activeFile} />}
+            {Editor && <Editor key={activeFile.name} file={activeFile} write={write} />}
+            {!Editor && <Previewer key={activeFile.name} file={activeFile} />}
           </>
         )}
 

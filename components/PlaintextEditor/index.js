@@ -1,21 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Editor from 'react-simple-code-editor';
 
 import css from './style.css';
 
-function PlaintextEditor({ file, write }) {
-  console.log(file, write);
+function PlainTextEditor({ file, write }) {
+  const [fileContent, setFileContent] = React.useState('')
+  React.useEffect(() => {
+    file.text().then(content => setFileContent(content))
+  }, [])
   return (
     <div className={css.editor}>
-      <h3>TODO</h3>
-      <i>text/plain</i>
+      <Editor
+        value={fileContent}
+        onValueChange={(fileContent) => {
+          const updatedFile = new File([`${fileContent}`], file.name, { type: file.type, lastModified: new Date() })
+          write(updatedFile)
+          setFileContent(fileContent)
+        }}
+        highlight={(fileContent) => fileContent}
+        padding={10}
+        tabSize={2}
+        insertSpaces={true}
+        className={css.content}
+      />
     </div>
   );
 }
 
-PlaintextEditor.propTypes = {
+PlainTextEditor.propTypes = {
   file: PropTypes.object,
   write: PropTypes.func
 };
 
-export default PlaintextEditor;
+export default PlainTextEditor;

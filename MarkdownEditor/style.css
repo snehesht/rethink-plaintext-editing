@@ -1,4 +1,26 @@
 .editor {
   width: 640px;
   background-color: var(--color-white);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
+  border-radius: 4px;
+}
+
+.editor .content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  white-space: pre-wrap;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
+  padding: 20px;
+  outline: none;
+}
+
+textarea {
+  outline: none;
 }
