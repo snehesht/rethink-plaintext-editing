@@ -13,7 +13,7 @@ function MarkdownEditor({ file, write }) {
 
   return (
     <div className={css.editor}>
-      <div className={css.title}>Javascript Editor</div>
+      <div className={css.title}>Markdown Editor</div>
       <div className={css.content}>
         <AceEditor
           placeholder="Code Editor"
