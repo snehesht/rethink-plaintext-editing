@@ -1,5 +1,5 @@
 .editor {
-  width: 640px;
+  width: 100%;
   background-color: var(--color-white);
   display: flex;
   flex-direction: column;
@@ -16,7 +16,6 @@
   white-space: pre-wrap;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
     monospace;
-  padding: 20px;
 }
 
 .editor .title {

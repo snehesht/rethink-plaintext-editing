@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import AceEditor from '../AceEditor'
 import css from './style.css';
 
-function JavascriptEditor({ file, write }) {
+function MarkdownEditor({ file, write }) {
   const [fileContent, setFileContent] = React.useState('')
   const editorRef = React.useRef(null);
   React.useEffect(() => {
     file.text().then(content => setFileContent(content))
   }, [])
-  
+
 
   return (
     <div className={css.editor}>
@@ -17,7 +17,7 @@ function JavascriptEditor({ file, write }) {
       <div className={css.content}>
         <AceEditor
           placeholder="Code Editor"
-          mode="javascript"
+          mode="md"
           theme="github"
           name="js-editor"
           onChange={(fileContent) => {
@@ -37,21 +37,21 @@ function JavascriptEditor({ file, write }) {
             enableSnippets: false,
             showLineNumbers: true,
             tabSize: 2,
-          }} 
+          }}
           editorProps={{ $blockScrolling: true }}
           style={{
             minWidth: '100%',
             minHeight: '90vh',
           }}
-          />
+        />
       </div>
     </div>
   );
 }
 
-JavascriptEditor.propTypes = {
+MarkdownEditor.propTypes = {
   file: PropTypes.object,
   write: PropTypes.func,
 };
 
-export default JavascriptEditor;
+export default MarkdownEditor;

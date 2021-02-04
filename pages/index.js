@@ -9,7 +9,7 @@ import { listFiles } from '../files';
 import useLocalStorage from '../lib/localstorage';
 
 // Used below, these need to be registered
-import MarkdownEditor from '../MarkdownEditor';
+import MarkdownEditor from '../components/MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
 import JavascriptEditor from '../components/JavascriptEditor';
 
